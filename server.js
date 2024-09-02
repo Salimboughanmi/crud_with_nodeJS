@@ -8,7 +8,7 @@ app.use(express.json()) // application lire des donner de type json from postman
 app.get('/get' , ()=>{console.log("get work")})
 
 
-app.post('/post' , (req , res)=> {
+/* app.post('/post' , (req , res)=> {
     data = req.body
     usr = new User(data)
     usr.save().then(
@@ -17,7 +17,43 @@ app.post('/post' , (req , res)=> {
     }).catch(
         (err)=> res.send(err))
    
+}) */
+
+
+app.post('/create' , async (req , res )=> {
+    try {
+        data = req.body
+        usr = new User(data)
+       userSaved = await usr.save()
+       res.send(userSaved)
+    } catch (error) {
+        res.error
+    }
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.put('/put' , ()=> console.log('put work'))
 
