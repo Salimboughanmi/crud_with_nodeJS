@@ -1,5 +1,7 @@
 const express = require('express')
 //import express from 'express';
+require('./config/connect')
+
 const app = express()
 
 app.get('/get' , ()=>{console.log("get work")})
