@@ -90,8 +90,16 @@ app.delete('/delete/:id' , (req,res)=>{
 })
 
 
-
-
+//Create DELETE request async Await
+app.delete('/deleteUser/:id' , async (req , res)=>{
+   try {
+    myid = req.params.id
+    myuser = await User.findByIdAndDelete({_id : myid})
+    res.send(myuser)
+   } catch (error) {
+    res.send(error)
+   }
+})
 
 
 
@@ -108,7 +116,7 @@ app.delete('/delete/:id' , (req,res)=>{
 app.put('/put' , ()=> console.log('put work'))
 
 
-app.delete('/delete' , ()=>console.log ('delete work'))
+
 
 
 
