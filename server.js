@@ -5,10 +5,8 @@ require('./config/connect')
 const app = express() 
 app.use(express.json()) // application lire des donner de type json from postman or frontend
 
-app.get('/get' , ()=>{console.log("get work")})
 
-
-/* app.post('/post' , (req , res)=> {
+ app.post('/post' , (req , res)=> {
     data = req.body
     usr = new User(data)
     usr.save().then(
@@ -17,7 +15,7 @@ app.get('/get' , ()=>{console.log("get work")})
     }).catch(
         (err)=> res.send(err))
    
-}) */
+}) 
 
 
 app.post('/create' , async (req , res )=> {
@@ -32,7 +30,13 @@ app.post('/create' , async (req , res )=> {
 })
 
 
-
+app.get('/getall' , (req , res )=>{
+    User.find().then((users)=>{
+        res.send(users)
+    }
+).catch(
+        (err)=>{res.err} )
+})
 
 
 
