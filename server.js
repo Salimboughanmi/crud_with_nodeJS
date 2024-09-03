@@ -35,11 +35,26 @@ app.get('/getall' , (req , res )=>{
         res.send(users)
     }
 ).catch(
-        (err)=>{res.err} )
+        (err)=>{res.send(err)} )
 })
 
 
+app.get('/all' , async (req , res)=>{
+try {
+    users = await User.find({ age:30 });
+    res.send(users)
+    
+} catch (error) {
+    res.send(error)
+} })
+ 
 
+app.get('/getbyId/:id' , (req , res)=>{
+  myId = req.params.id ;
+  User.findById({_id : myId }).then((user)=>{ //findOne = rechercher par name , id , username ...
+    res.send(user)
+  }).catch((err)=>res.send(err))
+})
 
 
 
