@@ -3,9 +3,10 @@ const User = require('./models/user')
 //import express from 'express';
 require('./config/connect')
 const app = express() 
-app.use(express.json()) // application lire des donner de type json from postman or frontend
+app.use(express.json()) // mettre l'application lire des donner de type json from postman or frontend
 
 
+//create POST request
  app.post('/post' , (req , res)=> {
     data = req.body
     usr = new User(data)
@@ -18,6 +19,7 @@ app.use(express.json()) // application lire des donner de type json from postman
 }) 
 
 
+//create POST request with async await
 app.post('/create' , async (req , res )=> {
     try {
         data = req.body
@@ -30,6 +32,7 @@ app.post('/create' , async (req , res )=> {
 })
 
 
+//create GET request
 app.get('/getall' , (req , res )=>{
     User.find().then((users)=>{
         res.send(users)
@@ -39,6 +42,7 @@ app.get('/getall' , (req , res )=>{
 })
 
 
+//create GET request with Async Await
 app.get('/all' , async (req , res)=>{
 try {
     users = await User.find({ age:30 });
@@ -49,6 +53,7 @@ try {
 } })
  
 
+// Create Get by ID request
 app.get('/getbyId/:id' , (req , res)=>{
   myId = req.params.id ;
   User.findById({_id : myId }).then((user)=>{ //findOne = rechercher par name , id , username ...
@@ -57,6 +62,32 @@ app.get('/getbyId/:id' , (req , res)=>{
 })
 
 
+// Create Get by ID request with Async Await
+app.get('/getUserByID/:id' , async (req , res)=>{
+try {
+    myid = req.params.id
+  user = await User.findOne({_id:myid})
+  res.send(user)
+
+} catch (error) {
+    res.send(error)
+}
+
+})
+
+
+// Create DELETE request 
+app.delete('/delete/:id' , (req,res)=>{
+    myid =req.params.id
+    User.findByIdAndDelete({ _id:myid}).then((userDelete)=>{
+     
+        res.send(userDelete)
+ 
+    })
+      .catch((err)=>{
+        res.send(err)
+    })
+})
 
 
 
