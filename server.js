@@ -102,18 +102,15 @@ app.delete('/deleteUser/:id' , async (req , res)=>{
 })
 
 
+// Create UPDATE request 
+app.put('/update/:id' , (req , res)=>{
+    myid = req.params.id
+    newData = req.body
 
-
-
-
-
-
-
-
-
-
-
-app.put('/put' , ()=> console.log('put work'))
+    User.findByIdAndUpdate({_id : myid} , newData).then((updated)=>{
+        res.send(updated)
+    }).catch((err)=> res.send(err))
+} )
 
 
 
