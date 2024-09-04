@@ -234,8 +234,8 @@ app.get('/getproduct', async (req , res)=>{
         newData = req.body
     
         Product.findByIdAndUpdate({_id : myid} , newData).then((updated)=>{
-            res.send(updated)
-        }).catch((err)=> res.send(err))
+            res.status(200).send(updated)
+        }).catch((err)=> res.status(400).send(err))
     } )
     
     
