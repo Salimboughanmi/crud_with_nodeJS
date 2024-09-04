@@ -160,10 +160,10 @@ app.post('/productPost' , async (req , res)=>{
 app.get('/getProd' , (req , res)=>{
    //myid = req.params.id
    Product.find().then((prod)=>{
-    res.send(prod)
+    res.status(200).send(prod)
    }
 ).catch((err)=>{
-      res.send(err)
+      res.status(400).send(err)
    })
 })
 

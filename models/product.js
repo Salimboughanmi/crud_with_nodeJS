@@ -7,6 +7,9 @@ const Product = mongoose.model('Product' ,{
     description : {
         type : String
     } , 
+    price : {
+        type : Number
+    } , 
     image : {
         type : String
     }
