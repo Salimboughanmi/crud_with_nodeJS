@@ -1,5 +1,6 @@
 const express = require('express')
 const User = require('./models/user')
+const Product = require('./models/product')
 //import express from 'express';
 require('./config/connect')
 const app = express() 
@@ -20,7 +21,7 @@ app.use(express.json()) // mettre l'application lire des donner de type json fro
 
 
 //create POST request with async await
-app.post('/create' , async (req , res )=> {
+app.post('/postUser' , async (req , res )=> {
     try {
         data = req.body
         usr = new User(data)
@@ -33,7 +34,7 @@ app.post('/create' , async (req , res )=> {
 
 
 //create GET request
-app.get('/getall' , (req , res )=>{
+app.get('/get' , (req , res )=>{
     User.find().then((users)=>{
         res.send(users)
     }
@@ -43,7 +44,7 @@ app.get('/getall' , (req , res )=>{
 
 
 //create GET request with Async Await
-app.get('/all' , async (req , res)=>{
+app.get('/getUser' , async (req , res)=>{
 try {
     users = await User.find({ age:30 });
     res.send(users)
@@ -124,6 +125,139 @@ app.put('/updateUser/:id' ,async (req , res)=>{
         res.status(400).send(error)
     }
 })
+
+/*  *****************************         CRUD PRODUCT       ********************** */
+
+//create POST request
+app.post('/postProduct' , (req , res)=>{
+    data = req.body
+    prod = new Product(data)
+    prod.save().then(
+        (savedprod)=>{
+        res.status(200).send(savedprod)
+    }).catch((err)=> res.status(400).send(err))
+    
+
+})
+
+
+//create POST request with async await
+app.post('/productPost' , async (req , res)=>{
+  try {
+    data = req.body
+    prod = new Product(data)
+    prodsaved = await prod.save()
+    res.status(200).send(prodsaved)
+    
+    
+  } catch (error) {
+    res.status(400).send(error)
+  }
+})
+
+
+//create GET request
+app.get('/getProd' , (req , res)=>{
+   //myid = req.params.id
+   Product.find().then((prod)=>{
+    res.send(prod)
+   }
+).catch((err)=>{
+      res.send(err)
+   })
+})
+
+//create GET request with Async Await
+app.get('/getproduct', async (req , res)=>{
+    try {
+      
+        prod = await Product.find();
+        res.send(prod)
+        
+    } catch (error) {
+        res.send(error)
+    } })
+     
+    
+    // Create Get by ID request
+    app.get('/getproductId/:id' , (req , res)=>{
+      myId = req.params.id ;
+      Product.findById({_id : myId }).then((prod)=>{ //findOne = rechercher par name , id , username ...
+        res.send(prod)
+      }).catch((err)=>res.send(err))
+    })
+    
+    
+    // Create Get by ID request with Async Await
+    app.get('/getmyprodByID/:id' , async (req , res)=>{
+    try {
+        myid = req.params.id
+      prod = await Product.findOne({_id:myid})
+      res.status(200).send(prod)
+    
+    } catch (error) {
+        res.status(400).send(error)
+    }
+    
+    })
+    
+    
+    // Create DELETE request 
+    app.delete('/deleteprod/:id' , (req,res)=>{
+        myid =req.params.id
+        Product.findByIdAndDelete({ _id:myid}).then((prodDelete)=>{
+         
+            res.send(prodDelete)
+     
+        })
+          .catch((err)=>{
+            res.send(err)
+        })
+    })
+    
+    
+    //Create DELETE request async Await
+    app.delete('/deletemyProduct/:id' , async (req , res)=>{
+       try {
+        myid = req.params.id
+        prodDelete = await User.findByIdAndDelete({_id : myid})
+        res.send(prodDelete)
+       } catch (error) {
+        res.send(error)
+       }
+    })
+    
+    
+    // Create UPDATE request 
+    app.put('/updateprod/:id' , (req , res)=>{
+        myid = req.params.id
+        newData = req.body
+    
+        Product.findByIdAndUpdate({_id : myid} , newData).then((updated)=>{
+            res.send(updated)
+        }).catch((err)=> res.send(err))
+    } )
+    
+    
+    // Create UPDATE request async Await
+    app.put('/updateMyprod/:id' ,async (req , res)=>{
+        try {
+            myid = req.params.id
+            newdata = req.body
+            prod = await Product.findByIdAndUpdate({_id : myid} , newdata)
+            res.status(200).send(prod)
+        } catch (error) {
+            res.status(400).send(error)
+        }
+    })
+
+
+
+
+
+
+
+
 
 
 
