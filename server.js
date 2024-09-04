@@ -113,15 +113,15 @@ app.put('/update/:id' , (req , res)=>{
 } )
 
 
-// Create UPDATE request 
+// Create UPDATE request async Await
 app.put('/updateUser/:id' ,async (req , res)=>{
     try {
         myid = req.params.id
         newdata = req.body
         user = await User.findByIdAndUpdate({_id : myid} , newdata)
-        res.send(user)
+        res.status(200).send(user)
     } catch (error) {
-        res.send(error)
+        res.status(400).send(error)
     }
 })
 
