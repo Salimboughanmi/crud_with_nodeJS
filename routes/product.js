@@ -1,11 +1,41 @@
 const express = require("express")
 const router =  express.Router()
 const Product = require('../models/product')
+const multer = require('multer')  // to upload image
 
-/*  *****************************         CRUD PRODUCT       ********************** */
+filename = '';
+
+const mystorage = multer.diskStorage({
+    destination : 'assets' ,// ou j'enrigistrer mon image
+    filename :(req , file , redirect)=>{
+        let date = Date.now();
+        let fl = date + '.' + file.mimetype.split('/')[1]; //image/png
+        redirect(null , fl);
+        filename =fl ;
+    }
+})
+
+const upload = multer({storage : mystorage}); // midellware entre appel request et function creation request
+
+
+//create POST request with async await
+router.post('/productPost'  , upload.any('image')  , async (req , res)=>{
+    try {
+      data = req.body
+      prod = new Product(data)
+      prod.image = filename ;
+      prodsaved = await prod.save()
+      filename = ''; 
+      res.status(200).send(prodsaved)
+      
+      
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  })
 
 //create POST request
-router.post('/postProduct' , (req , res)=>{
+/* router.post('/postProduct' , (req , res)=>{
     data = req.body
     prod = new Product(data)
     prod.save().then(
@@ -15,21 +45,9 @@ router.post('/postProduct' , (req , res)=>{
     
 
 })
+ */
 
 
-//create POST request with async await
-router.post('/productPost' , async (req , res)=>{
-  try {
-    data = req.body
-    prod = new Product(data)
-    prodsaved = await prod.save()
-    res.status(200).send(prodsaved)
-    
-    
-  } catch (error) {
-    res.status(400).send(error)
-  }
-})
 
 
 //create GET request
