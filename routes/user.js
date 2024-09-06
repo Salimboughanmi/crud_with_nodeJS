@@ -42,7 +42,7 @@ router.post('/login' ,async (req , res)=>{
             name : user.name
 
         }
-     token = jwt.sign(payload ,'12345' ) //payload contient data que je le mettre dans token
+     token = jwt.sign(payload ,'12345' ) //payload contient data que je le mettre dans token ; '12345' pour la verification de token quand je besoin un data via token
      res.status(200).send({mytoken :token })
     }
 
