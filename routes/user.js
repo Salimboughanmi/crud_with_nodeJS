@@ -1,6 +1,27 @@
 const express = require("express")
 const router =  express.Router()
 const User = require('../models/user')
+const bcrypt = require('bcrypt')
+
+
+
+
+router.post('/register' ,async (req , res)=>{
+    data = req.body
+
+    usr = new User(data);
+    salt = bcrypt.genSaltSync(10)
+    cryptedpass = await bcrypt.hashSync(data.password , salt)
+    usr.password = cryptedpass
+    usr.save().then(
+        (savedUser)=>{
+       res.send(savedUser)
+    }).catch(
+        (err)=> res.status(400).send(err))
+
+
+
+})
 
 
 
